@@ -28,22 +28,15 @@ fn handle_connection(mut stream: TcpStream) {
     let mut result = fs::read_to_string(filename);
     if result.is_err() {
         result = fs::read_to_string("404.html");
-        let contents = result.unwrap();
-
-        let response = format!("{}{}", status_line, contents);
-
-        println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
-        stream.write(response.as_bytes()).unwrap();
-        stream.flush().unwrap();
-    } else {
-        let contents = result.unwrap();
-
-        let response = format!("{}{}", status_line, contents);
-
-        println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
-        stream.write(response.as_bytes()).unwrap();
-        stream.flush().unwrap();
     }
+
+    let contents = result.unwrap();
+
+    let response = format!("{}{}", status_line, contents);
+
+    println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
+    stream.write(response.as_bytes()).unwrap();
+    stream.flush().unwrap();
 }
 
 fn get_filepath(buf:&[u8; 1024]) -> String {
